@@ -3,7 +3,7 @@ services:
   blog_pg:
     image: postgres
     environment:
-      POSTGRES_DB: tasks
+      POSTGRES_DB: qablog
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
