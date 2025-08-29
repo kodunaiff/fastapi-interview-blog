@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <script src="/static/js/auth.js"></script>
+    <script defer src="/static/js/login.js"></script>
+    <script defer src="/static/js/dashboard.js"></script>
+    <script defer src="/static/js/register.js"></script>
+</head>
+<body>
+    <button onclick="window.location.href='/static/templates/register.html'">Зарегистрироваться</button>
+    <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
+    <h1>Вход в кабинет</h1>
+    <form onsubmit="login(event)">
+        <input type="text" id="username" placeholder="Username" required />
+        <br>
+        <input type="email" id="email" placeholder="Email" required />
+        <br>
+        <input type="password" id="password" placeholder="Пароль" required />
+        <br>
+        <button type="submit">Войти</button>
+    </form>
+    <div id="error" style="color: red;"></div>
+</body>
+</html>

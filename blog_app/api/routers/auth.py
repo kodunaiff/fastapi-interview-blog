@@ -1,6 +1,6 @@
 from datetime import timedelta
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,8 +14,16 @@ from schemas.auth import TokenPair, RefreshRequest
 
 router = APIRouter(tags=["auth"], prefix="/auth")
 
-@router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-async def register_user(payload: UserCreate, session: AsyncSession = Depends(get_db)):
+
+@router.post(
+    "/register",
+    response_model=UserRead,
+    status_code=status.HTTP_201_CREATED
+)
+async def register_user(
+    payload: UserCreate,
+    session: AsyncSession = Depends(get_db)
+):
     # Проверка уникальности username
     exists = (await session.execute(select(User).where(User.username == payload.username))).scalar_one_or_none()
     if exists:
@@ -31,8 +39,12 @@ async def register_user(payload: UserCreate, session: AsyncSession = Depends(get
     await session.refresh(user)
     return user
 
+
 @router.post("/login", response_model=TokenPair)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_db)):
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: AsyncSession = Depends(get_db)
+):
     # OAuth2PasswordRequestForm: поля username, password
     user = (await session.execute(select(User).where(User.username == form_data.username))).scalar_one_or_none()
     if not user or not verify_password(form_data.password, user.hashed_password):
@@ -50,6 +62,17 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Async
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
 
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+async def logout(
+    response: Response,
+    current_user: User = Depends(get_current_active_user),
+):
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return
+
+
 @router.post("/refresh", response_model=TokenPair)
 async def refresh_token(req: RefreshRequest):
     try:
@@ -66,6 +89,9 @@ async def refresh_token(req: RefreshRequest):
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
 
+
 @router.get("/me", response_model=UserRead)
-async def get_me(current_user: User = Depends(get_current_active_user)):
+async def get_me(
+    current_user: User = Depends(get_current_active_user)
+):
     return current_user

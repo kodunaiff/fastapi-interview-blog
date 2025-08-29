@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
+from fastapi.staticfiles import StaticFiles
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routers import auth, users, posts, tags
+from api import router as api_router
 from core.config import settings
 
 
@@ -29,12 +31,10 @@ if settings.CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-# Роуты
-app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
-app.include_router(users.router, prefix=settings.API_V1_PREFIX)
-app.include_router(tags.router, prefix=settings.API_V1_PREFIX)
-app.include_router(posts.router, prefix=settings.API_V1_PREFIX)
+app.include_router(api_router)
 
+base_dir = "/home/bato/fastApiProjects/blog_proj/" # заменить потом через os base dir
+app.mount("/static", StaticFiles(directory=f"{base_dir}static"), name="static")
 
 if __name__ == "__main__":
     uvicorn.run(
