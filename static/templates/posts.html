@@ -2,10 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Кабинет</title>
+    <title>Главная - Создание постов</title>
     <script src="/static/js/auth.js"></script>
-    <script src="/static/js/protected.js"></script>
-    <script defer src="/static/js/dashboard.js"></script>
+    <script src="/static/js/protected.js" defer></script>
+    <script defer src="/static/js/index.js"></script>
 </head>
 <body>
     <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
@@ -13,9 +13,11 @@
     <button onclick="window.location.href='/static/templates/dialog.html'">Перейти к диалогам</button>
     <button onclick="logout()">Выйти</button>
 
-    <h1>Личный кабинет</h1>
-    <p id="username">Загрузка...</p>
-    <p id="user-email">Загрузка...</p>
-    <p id="is-superuser"></p>
+
+
+    <h2>Все посты</h2>
+    <div id="posts-all-list"></div>
+
+
 </body>
 </html>

@@ -4,6 +4,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from api.dependencies import get_db, get_current_active_user
 from models.post import Post, Tag
@@ -16,27 +17,42 @@ router = APIRouter(tags=["posts"], prefix="/posts")
 @router.get("/", response_model=list[PostRead])
 async def list_posts(
     session: AsyncSession = Depends(get_db),
-    limit: int = Query(50, ge=1, le=100),
-    offset: int = Query(0, ge=0),
-    tag_id: Optional[UUID] = Query(default=None),
-    owner_id: Optional[UUID] = Query(default=None),
-    q: Optional[str] = Query(default=None, description="Search in title"),
 ):
-    stmt = select(Post).order_by(Post.created_at.desc()).limit(limit).offset(offset)
-    if tag_id:
-        stmt = stmt.join(Post.tags).where(Tag.id == tag_id)
-    if owner_id:
-        stmt = stmt.where(Post.owner_id == owner_id)
-    if q:
-        stmt = stmt.where(Post.title.ilike(f"%{q}%"))
-
-    posts = (await session.execute(stmt)).scalars().unique().all()
+    stmt = (
+        select(Post)
+        .options(
+            selectinload(Post.owner),
+            selectinload(Post.tags),
+        )
+        .order_by(Post.created_at.desc())
+    )
+    posts = (await session.execute(stmt)).scalars().all()
     return posts
 
 
+
+@router.get("/me", response_model=list[PostRead])
+async def list_posts(
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    stmt = (
+        select(Post)
+        .options(
+            selectinload(Post.owner),
+            selectinload(Post.tags),
+        )
+        .where(Post.owner_id==current_user.id)
+        .order_by(Post.created_at.desc())
+    )
+    posts = (await session.execute(stmt)).scalars().all()
+    return posts
+
 @router.get("/{post_id}", response_model=PostRead)
 async def get_post(post_id: UUID, session: AsyncSession = Depends(get_db)):
-    post = (await session.execute(select(Post).where(Post.id == post_id))).scalar_one_or_none()
+    post = (await session.execute(
+        select(Post).where(Post.id == post_id)
+    )).scalar_one_or_none()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     return post

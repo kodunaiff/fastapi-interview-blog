@@ -1,5 +1,6 @@
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, field_validator
+from datetime import datetime
 
 
 class TagCreate(BaseModel):
@@ -19,3 +20,12 @@ class TagRead(BaseModel):
 
     id: UUID
     name: str
+    created_at: datetime
+
+
+class TagResolveRequest(BaseModel):
+    names: list[str]
+
+
+class TagIDs(BaseModel):
+    ids: list[UUID]

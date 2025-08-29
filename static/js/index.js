@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     await loadUserInfo();
     await loadPosts();
+    await loadAllPosts();
     setupPostForm();
 });
 
@@ -91,17 +92,45 @@ async function createPost() {
 
 // Обработка тегов (если нужно преобразовать в UUID)
 async function processTags(tagsInput) {
-    if (!tagsInput.trim()) return [];
+    const names = Array.from(
+        new Set(
+            tagsInput.split(",").map((t) => t.trim()).filter(Boolean)
+        )
+    );
+    if (!names.length) return [];
 
-    // Если у вас теги создаются по имени, а не по UUID
-    // Здесь может быть логика поиска/создания тегов
-    return []; // Пока возвращаем пустой массив
+    try {
+        const res = await fetch("/api/v1/tags/resolve", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${getToken()}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ names })
+        });
+
+        if (res.status === 401) {
+            logout();
+            return [];
+        }
+
+        if (!res.ok) {
+            console.error("Resolve tags failed", res.status);
+            return [];
+        }
+
+        const data = await res.json(); // { ids: [...] }
+        return data.ids;
+    } catch (e) {
+        console.error("Error resolving tags:", e);
+        return [];
+    }
 }
 
 // Загрузка постов пользователя
 async function loadPosts() {
     try {
-        const response = await fetch("/api/v1/posts?limit=20", {
+        const response = await fetch("/api/v1/posts/me?limit=20", {
             headers: {
                 "Authorization": `Bearer ${getToken()}`
             }
@@ -124,9 +153,56 @@ async function loadPosts() {
     }
 }
 
+async function loadAllPosts() {
+    try {
+        const response = await fetch("/api/v1/posts/?limit=20", {
+            headers: {
+                "Authorization": `Bearer ${getToken()}`
+            }
+        });
+
+        if (response.status === 401) {
+            logout();
+            return;
+        }
+
+        if (response.ok) {
+            const posts = await response.json();
+            displayAllPosts(posts);
+        } else {
+            console.error("Error loading posts:", response.status);
+        }
+
+    } catch (error) {
+        console.error("Error loading posts:", error);
+    }
+}
+
 // Отображение постов
 function displayPosts(posts) {
     const postsList = document.getElementById("posts-list");
+
+    if (posts.length === 0) {
+        postsList.innerHTML = "<p>У вас пока нет постов</p>";
+        return;
+    }
+
+    postsList.innerHTML = posts.map(post => `
+        <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px;">
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <small>Создан: ${new Date(post.created_at).toLocaleDateString()}</small>
+            ${post.tags && post.tags.length > 0 ?
+                `<div>Теги: ${post.tags.map(tag => tag.name).join(', ')}</div>` : ''}
+            <button onclick="editPost('${post.id}')">Редактировать</button>
+            <button onclick="deletePost('${post.id}')">Удалить</button>
+        </div>
+    `).join('');
+}
+
+// Отображение постов
+function displayAllPosts(posts) {
+    const postsList = document.getElementById("posts-all-list");
 
     if (posts.length === 0) {
         postsList.innerHTML = "<p>У вас пока нет постов</p>";
