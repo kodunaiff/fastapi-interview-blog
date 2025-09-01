@@ -3,10 +3,10 @@
 # подключение к postgres через докер-компос
 
 ```
-docker compose up -d pg
-docker compose stop pg
+docker compose up -d blog_pg
+docker compose stop blog_pg
 docker compose down
-docker compose start pg
+docker compose start blog_pg
 sudo systemctl stop postgresql
 ```
 
@@ -17,7 +17,7 @@ sudo systemctl stop postgresql
 ```
 Host - localhost
 Port - 5432
-Database - tasks
+Database - qablog
 Username - user
 Password - password
 ```
