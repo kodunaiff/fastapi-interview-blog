@@ -24,7 +24,7 @@ async function login(event) {
     if (response.ok) {
         const data = await response.json();
         setToken(data.access_token);
-        window.location.href = "/static/templates/dashboard.html";
+        window.location.href = "/static/templates/index.html";
     } else {
         errorElement.innerText = "Неверный логин или пароль";
     }

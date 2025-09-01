@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>BlogQuestion</title>
+  <script src="/static/js/auth.js" defer></script>
+  <script src="/static/js/protected.js" defer></script>
+  <script src="/static/js/index.js" defer></script>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+
+
+
+    <hr>
+    <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
+
+    <h2>Создать новый пост</h2>
+    <form id="create-post-form">
+        <div>
+            <label for="post-title">Заголовок:</label>
+            <input type="text" id="post-title" required>
+        </div>
+
+        <div>
+            <label for="post-content">Содержание:</label>
+            <textarea id="post-content" rows="6" cols="50" required></textarea>
+        </div>
+
+        <div>
+            <label for="post-tags">Теги (через запятую):</label>
+            <input type="text" id="post-tags" placeholder="python, algorithms, database">
+        </div>
+
+        <button type="submit">Создать пост</button>
+    </form>
+
+    <div id="post-message" style="margin-top: 20px;"></div>
+
+</body>
+</html>

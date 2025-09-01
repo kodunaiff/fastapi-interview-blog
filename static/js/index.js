@@ -257,3 +257,27 @@ async function deletePost(postId) {
         showMessage("Ошибка сети", "red");
     }
 }
+
+
+
+// Тема: restore + toggle
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('theme'); // 'light' | 'dark' | null
+if (savedTheme) root.dataset.theme = savedTheme;
+
+function updateThemeIcon() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const isDark = root.dataset.theme === 'dark' || (!root.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  btn.textContent = isDark ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const next = (root.dataset.theme === 'dark') ? 'light' : 'dark';
+  root.dataset.theme = next;
+  localStorage.setItem('theme', next);
+  updateThemeIcon();
+}
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.id === 'theme-toggle') toggleTheme();
+});
+updateThemeIcon();

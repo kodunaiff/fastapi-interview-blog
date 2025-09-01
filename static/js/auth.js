@@ -28,5 +28,5 @@ async function logout() {
     });
 
     removeToken();
-    window.location.href = '/static/templates/login.html';
+    window.location.href = '/static/templates/auth/login.html';
 }

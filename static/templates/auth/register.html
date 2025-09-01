@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
-    <script src="/static/js/auth.js"></script>
+    <script defer src="/static/js/auth.js"></script>
     <script defer src="/static/js/register.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
-    <button onclick="window.location.href='/static/templates/login.html'">Залогиниться</button>
+    <button onclick="window.location.href='/static/templates/auth/login.html'">Залогиниться</button>
     <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
     <h1>Регистрация</h1>
     <form onsubmit="register(event)">

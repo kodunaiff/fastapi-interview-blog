@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная - Создание постов</title>
+    <script defer src="/static/js/auth.js"></script>
+    <script defer src="/static/js/protected.js"></script>
+    <script defer src="/static/js/index.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+
+  <!--хедер-->
+  <div id="header"></div>
+  <!--хедер-->
+
+  <main>
+
+    <h2>Все посты</h2>
+    <div id="posts-all-list"></div>
+
+  </main>
+
+      <!--  концовка  -->
+  <div id="footer"></div>
+
+  <script type="module">
+  async function include(elId, url) {
+    try {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const r = await fetch(url, { cache: "no-cache" });
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      el.innerHTML = await r.text();
+    } catch (e) {
+      console.error("Include error:", url, e);
+    }
+  }
+
+  Promise.all([
+    include('header', '/static/templates/includes/header.html'),
+    include('footer', '/static/templates/includes/footer.html')
+  ]);
+  </script>
+
+</body>
+</html>

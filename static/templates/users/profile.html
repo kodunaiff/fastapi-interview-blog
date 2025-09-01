@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Кабинет</title>
-    <script src="/static/js/auth.js"></script>
-    <script src="/static/js/protected.js"></script>
+    <script defer src="/static/js/auth.js"></script>
+    <script defer src="/static/js/protected.js"></script>
     <script defer src="/static/js/dashboard.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
     <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
-    <button onclick="window.location.href='/static/templates/posts.html'">Перейти на страницу всех постов</button>
+    <button onclick="window.location.href='/static/templates/posts/posts.html'">Перейти на страницу всех постов</button>
     <button onclick="window.location.href='/static/templates/dialog.html'">Перейти к диалогам</button>
     <button onclick="logout()">Выйти</button>
 
