@@ -1,4 +1,7 @@
-# Blog
+# Blog 
+
+![Страница Постов](https://github.com/kodunaiff/fastapi-interview-blog/blob/main/img_for_readme/main_pic.png)
+
 
 # подключение к postgres через докер-компос
 
