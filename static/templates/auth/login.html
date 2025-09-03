@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Вход</title>
-    <script defer src="/static/js/auth.js"></script>
-    <script defer src="/static/js/login.js"></script>
-    <script defer src="/static/js/dashboard.js"></script>
-    <script defer src="/static/js/register.js"></script>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/features/auth/login.js"></script>
     <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
     <button onclick="window.location.href='/static/templates/auth/register.html'">Зарегистрироваться</button>
-    <button onclick="window.location.href='/static/templates/index.html'">Перейти на главную</button>
+    <button onclick="window.location.href='/static/templates/posts/list.html'">Перейти на главную</button>
     <h1>Вход в кабинет</h1>
     <form onsubmit="login(event)">
         <input type="text" id="username" placeholder="Username" required />

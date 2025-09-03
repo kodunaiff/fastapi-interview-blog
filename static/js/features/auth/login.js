@@ -1,4 +1,4 @@
-// login.js
+// static/js/features/auth/login.js
 
 async function login(event) {
     event.preventDefault();
@@ -24,7 +24,7 @@ async function login(event) {
     if (response.ok) {
         const data = await response.json();
         setToken(data.access_token);
-        window.location.href = "/static/templates/index.html";
+        window.location.href = "/static/templates/posts/list.html";
     } else {
         errorElement.innerText = "Неверный логин или пароль";
     }

@@ -2,10 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Главная - Создание постов</title>
-    <script defer src="/static/js/auth.js"></script>
-    <script defer src="/static/js/protected.js"></script>
-    <script defer src="/static/js/posts.js"></script>
+    <title> Главная - Все посты </title>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/core/protected.js"></script>
+    <script defer src="/static/js/features/posts/list.js"></script>
     <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
@@ -14,12 +14,16 @@
   <div id="header"></div>
   <!--хедер-->
 
+
   <main>
 
     <h2>Все посты</h2>
-    <div id="posts-all-list"></div>
+      <p><a href="/static/templates/posts/create.html">Создать пост</a></p>
+    <div id="posts-all"></div>
 
   </main>
+
+
 
       <!--  концовка  -->
   <div id="footer"></div>

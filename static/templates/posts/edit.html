@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Редактирование поста</title>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/core/protected.js"></script>
+    <script defer src="/static/js/features/posts/edit.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
+    <button onclick="window.history.back()">Назад</button>
+    <button onclick="window.location.href='/static/templates/posts/list.html'">К списку</button>
 
+    <h1>Редактирование поста</h1>
+    <form id="edit-post-form">
+        <input type="text" id="post-title" placeholder="Заголовок" required>
+        <br>
+        <textarea id="post-content" placeholder="Содержание" required></textarea>
+        <br>
+        <input type="text" id="post-tags" placeholder="Теги (через запятую)">
+        <br>
+        <button type="submit">Сохранить</button>
+    </form>
+    <div id="post-message"></div>
 </body>
 </html>

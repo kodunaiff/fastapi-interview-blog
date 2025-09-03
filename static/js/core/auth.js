@@ -1,4 +1,4 @@
-// auth.js
+// static/js/core/auth.js
 
 function setToken(token) {
     localStorage.setItem('access_token', token);

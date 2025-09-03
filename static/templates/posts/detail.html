@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Пост — Детальная страница</title>
-    <script defer src="/static/js/auth.js"></script>
-    <script defer src="/static/js/protected.js"></script>
-    <script defer src="/static/js/posts.js"></script>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/core/protected.js"></script>
+    <script defer src="/static/js/features/posts/detail.js"></script>
     <link rel="stylesheet" href="/static/css/styles.css" />
     <style>
     .post-detail { border: 1px solid #ddd; padding: 16px; border-radius: 8px; }
@@ -14,39 +14,14 @@
   </style>
 </head>
 <body>
-
-  <!--хедер-->
-  <div id="header"></div>
-  <!--хедер-->
-
-  <main>
-    <h2>Пост</h2>
-    <div id="postId"></div>
-  </main>
+ <button onclick="window.history.back()">Назад</button>
+ <button onclick="window.location.href='/static/templates/posts/list.html'">К списку</button>
 
 
-      <!--  концовка  -->
-  <div id="footer"></div>
+  <h1>Детали поста</h1>
+    <div id="post-detail"></div>
+    <div id="post-message"></div>
 
-  <script type="module">
-  async function include(elId, url) {
-    try {
-      const el = document.getElementById(elId);
-      if (!el) return;
-      const r = await fetch(url, { cache: "no-cache" });
-      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-      el.innerHTML = await r.text();
-    } catch (e) {
-      console.error("Include error:", url, e);
-    }
-  }
-
-
-  Promise.all([
-      include('header', '/static/templates/includes/header.html'),
-      include('footer', '/static/templates/includes/footer.html')
-    ]);
-  </script>
 
 </body>
 </html>

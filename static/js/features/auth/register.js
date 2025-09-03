@@ -1,4 +1,4 @@
-// register.js
+// static/js/features/auth/register.js
 
 async function register(event) {
     event.preventDefault();

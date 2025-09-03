@@ -1,4 +1,4 @@
-// static/dashboard.js
+// static/js/features/users/profile.js
 
 document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("/api/v1/auth/me", {
