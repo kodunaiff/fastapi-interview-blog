@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title> Главная - Все тэги </title>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/core/protected.js"></script>
+    <script defer src="/static/js/features/tags/list.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+
+  <!--хедер-->
+  <div id="header"></div>
+  <!--хедер-->
+
+
+  <main>
+
+    <h2>Все тэги</h2>
+      <p><a href="/static/templates/tags/create.html">Создать тэг</a></p>
+    <div id="tags-all"></div>
+
+  </main>
+
+
+
+      <!--  концовка  -->
+  <div id="footer"></div>
+
+  <script type="module">
+  async function include(elId, url) {
+    try {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const r = await fetch(url, { cache: "no-cache" });
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      el.innerHTML = await r.text();
+    } catch (e) {
+      console.error("Include error:", url, e);
+    }
+  }
+
+  Promise.all([
+    include('header', '/static/templates/includes/header.html'),
+    include('footer', '/static/templates/includes/footer.html')
+  ]);
+  </script>
+
+</body>
+</html>
