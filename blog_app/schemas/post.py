@@ -3,8 +3,9 @@ from typing import Optional, List
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict
 
-from schemas.tag import TagRead
+#from schemas.tag import TagRead
 from schemas.user import UserRead
+from schemas.common import TagBrief
 
 
 class PostBase(BaseModel):
@@ -29,6 +30,7 @@ class PostRead(BaseModel):
     title: str
     content: str
     owner: UserRead
-    tags: list[TagRead]
+    #tags: list[TagRead]
+    tags: List[TagBrief]
     created_at: datetime
     updated_at: Optional[datetime] = None

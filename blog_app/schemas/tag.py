@@ -1,6 +1,8 @@
+from typing import TYPE_CHECKING
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, field_validator
 from datetime import datetime
+from schemas.common import PostBrief
 
 
 class TagCreate(BaseModel):
@@ -21,6 +23,10 @@ class TagRead(BaseModel):
     id: UUID
     name: str
     created_at: datetime
+
+
+class TagWithPosts(TagRead):
+    posts: list[PostBrief]
 
 
 class TagResolveRequest(BaseModel):

@@ -1,25 +1,34 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from typing import List
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
-from typing import List
 
 from api.dependencies import get_db, get_current_superuser, get_current_active_user
 from models.post import Tag
-from schemas.tag import TagCreate, TagRead, TagResolveRequest, TagIDs
+from schemas.tag import TagCreate, TagRead, TagResolveRequest, TagIDs, TagWithPosts
 
 router = APIRouter(tags=["tags"], prefix="/tags")
 
 
 @router.get("/", response_model=list[TagRead])
 async def list_tags(
-    limit: int = Query(100, ge=1, le=200),
-    offset: int = Query(0, ge=0),
     session: AsyncSession = Depends(get_db),
 ):
-    stmt = select(Tag).limit(limit).offset(offset).order_by(Tag.name.asc())
+    stmt = select(Tag).order_by(Tag.name.asc())
     tags = (await session.execute(stmt)).scalars().all()
     return tags
+
+
+@router.get("/{tag_id}", response_model=TagWithPosts)
+async def get_tag(
+    tag_id: UUID,
+    session: AsyncSession = Depends(get_db),
+    _: None = Depends(get_current_active_user),
+):
+    tag = (await session.execute(select(Tag).where(Tag.id == tag_id))).scalar_one_or_none()
+    return tag
 
 
 @router.post("/", response_model=TagRead, status_code=status.HTTP_201_CREATED)
