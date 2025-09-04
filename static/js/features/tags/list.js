@@ -1,4 +1,4 @@
-// static/js/features/posts/list.js
+// static/js/features/tags/list.js
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadAllTags();
@@ -45,6 +45,7 @@ function displayAllTags(tags) {
             <h3 style="margin: 0 0 10px 0;">${tag.name}</h3>
 
             <small style="color: #666;">Создан: ${new Date(tag.created_at).toLocaleDateString()}</small>
+            <button onclick="event.stopPropagation(); openTagDetail('${tag.id}')">Подробнее</button>
 
         </div>
     `).join('');
@@ -58,15 +59,15 @@ function showMessage(text, color) {
 }
 
 // Переход на детальную страницу
-function openPostDetail(postId) {
-    window.location.href = `/static/templates/posts/detail.html?id=${postId}`;
+function openTagDetail(tagId) {
+    window.location.href = `/static/templates/tags/detail.html?id=${tagId}`;
 }
 
 async function deletePost(postId) {
     if (!confirm("Удалить этот пост?")) return;
 
     try {
-        const response = await fetch(`/api/v1/posts/${postId}`, {
+        const response = await fetch(`/api/v1/tags/${tagId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${getToken()}`
