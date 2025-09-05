@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование поста</title>
+    <script defer src="/static/js/core/auth.js"></script>
+    <script defer src="/static/js/core/protected.js"></script>
+    <script defer src="/static/js/features/tags/edit.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+    <button onclick="window.history.back()">Назад</button>
+    <button onclick="window.location.href='/static/templates/tags/list.html'">К списку</button>
+
+    <h1>Редактирование</h1>
+    <form id="edit-tag-form">
+        <input type="text" id="tag-name" placeholder="Заголовок" required>
+        <br>
+        <button type="submit">Сохранить</button>
+    </form>
+    <div id="tag-message"></div>
+</body>
+</html>

@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="utf-8" />
+  <title>BlogQuestion</title>
+  <script src="/static/js/core/auth.js" defer></script>
+  <script src="/static/js/core/protected.js" defer></script>
+  <script src="/static/js/features/tags/create.js" defer></script>
+  <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
+
+
+    <hr>
+    <button onclick="window.location.href='/static/templates/tags/list.html'">Перейти на список тегов</button>
+
+    <h2>Создать новый тег</h2>
+    <form id="create-tag-form">
+        <div>
+            <label for="tag-name">Имя тега:</label>
+            <input type="text" id="tag-name" required>
+        </div>
+
+        <button type="submit">Создать тег</button>
+    </form>
+
+    <div id="tag-message" style="margin-top: 20px;"></div>
 
 </body>
 </html>
