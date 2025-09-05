@@ -1,9 +1,11 @@
+from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.dependencies import get_db, get_current_active_user
+from api.pagination import cursor_pagination
 from crud import post as crud_post
 from models.post import Post
 from models.user import User
@@ -20,6 +22,23 @@ def ensure_owner_or_superuser(current_user: User, post: Post):
 @router.get("/", response_model=list[PostRead])
 async def list_posts(session: AsyncSession = Depends(get_db), ):
     posts = await crud_post.get_posts_all(session)
+    return posts
+
+
+@router.get("/cursor", response_model=list[PostRead])
+async def list_posts(
+    cursor: Optional[UUID] = None,
+    limit: int = Query(20, ge=1, le=100),
+    session: AsyncSession = Depends(get_db),
+):
+    posts = await cursor_pagination(
+        session=session,
+        model=Post,
+        cursor=cursor,
+        limit=limit,
+        cursor_column=Post.created_at,
+        id_column=Post.id
+    )
     return posts
 
 
