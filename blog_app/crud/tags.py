@@ -45,6 +45,19 @@ async def create_tag(
     return tag
 
 
+async def update_tag(
+    session: AsyncSession,
+    tag: Tag,
+    *,
+    name: str
+) -> Tag:
+    if name is not None:
+        tag.name = name
+    await session.commit()
+    await session.refresh(tag)
+    return tag
+
+
 async def delete_tag(
     tag_id: UUID,
     session: AsyncSession,
