@@ -1,7 +1,9 @@
+from datetime import datetime
 from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict, field_validator
-from datetime import datetime
+
 from schemas.common import PostBrief
 
 
@@ -16,8 +18,10 @@ class TagCreate(BaseModel):
             raise ValueError("Tag name must not be empty")
         return v
 
+
 class TagUpdate(BaseModel):
     name: Optional[str] = None
+
 
 class TagRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
