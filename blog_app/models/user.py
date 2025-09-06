@@ -23,6 +23,13 @@ class User(Base):
     updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), onupdate=func.now())
 
     posts: Mapped[list["Post"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
+
+    time_entries: Mapped[list["TimeEntry"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"<User {self.username}>"
